@@ -1,31 +1,14 @@
-nums = [1,1,1]
-k = 2
-length = len(nums)
-left, right = 0, 0
-index = 0
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        # 前缀和 + 哈希表
+        presum = 0
+        index = 0
+        premap = {0:1}
 
-while left <= length :
-    if left < right :
-        sumup = 0
-        for i in range(left, right+1):
-            sumup += nums[i]
-        
-        if sumup < k :
-            if right < length :
-                right += 1
-            else :
-                break
-        elif sumup == k :
-            index += 1
-        else :
-            left += 1
-    else :
-        if nums[left] == k :
-            index += 1
-        elif nums[left] < k :
-            right += 1
-        else :
-            left += 1
-            right += 1
+        for num in nums:
+            presum += num
 
-print(index)
+            if presum - k in premap:
+                index += premap[presum - k]
+            premap[presum] = premap.get(presum, 0) + 1
+        return index

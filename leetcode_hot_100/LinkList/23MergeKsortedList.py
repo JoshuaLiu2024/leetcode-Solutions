@@ -106,3 +106,33 @@ class Solution_3:
                 merged.append(merge(l1, l2))
             lists = merged
         return lists[0]
+    
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution_4:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        # 优先队列法:最小堆
+        dummy = ListNode()
+        curr = dummy
+
+        import heapq
+        heap = []
+
+        # 初始化堆：把每个非空链表的第一个节点压入堆
+        for i, head in enumerate(lists):
+            if head:
+                heapq.heappush(heap, (head.val, i, head))
+        
+        while heap:
+            val, i, node = heapq.heappop(heap)
+            curr.next = node
+            curr = curr.next
+            
+            # 如果该节点还有下一个节点，加入堆
+            if node.next:
+                heapq.heappush(heap, (node.next.val, i, node.next))
+
+        return dummy.next
